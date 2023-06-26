@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Live Chat Riianes</title>
+  <style>
+    /* CSS untuk tampilan chat */
+    .chat-container {
+      border: 1px solid #ccc;
+      height: 400px;
+      overflow-y: scroll;
+      padding: 10px;
+    }
+
+    .chat-message {
+      margin-bottom: 10px;
+    }
+
+    .chat-message .user {
+      font-weight: bold;
+    }
+
+    .chat-message .timestamp {
+      font-size: 0.8em;
+      color: #888;
+      margin-left: 10px;
+    }
+
+    /* CSS untuk form chat */
+    .chat-form {
+      margin-top: 10px;
+    }
+
+    .chat-form input[type="text"] {
+      width: 80%;
+    }
+
+    .chat-form input[type="submit"] {
+      width: 18%;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container" id="chatContainer"></div>
+  <form class="chat-form" onsubmit="sendMessage(); return false;">
+    <input type="text" id="messageInput" placeholder="Tulis pesan..." required />
+    <input type="file" id="imageInput" />
+    <input type="submit" value="Kirim" />
+  </form>
+
+  <script>
+    // Fungsi untuk mengirim pesan
+    function sendMessage() {
+      var messageInput = document.getElementById('messageInput');
+      var imageInput = document.getElementById('imageInput');
+      var chatContainer = document.getElementById('chatContainer');
+
+      var message = messageInput.value;
+      var image = imageInput.files[0];
+
+      var username = 'Anonymous'; // Menggunakan nama pengguna anonim
+
+      // Buat elemen untuk menampilkan pesan
+      var messageElement = document.createElement('div');
+      messageElement.classList.add('chat-message');
+
+      // Tampilkan nama pengguna dan waktu
+      var userElement = document.createElement('span');
+      userElement.classList.add('user');
+      userElement.innerText = username;
+
+      var timestampElement = document.createElement('span');
+      timestampElement.classList.add('timestamp');
+      timestampElement.innerText = getCurrentTime();
+
+      messageElement.appendChild(userElement);
+      messageElement.appendChild(timestampElement);
+
+      // Tampilkan pesan teks
+      var textElement = document.createElement('p');
+      textElement.innerText = message;
+      messageElement.appendChild(textElement);
+
+      // Tampilkan gambar jika ada
+      if (image) {
+        var imageElement = document.createElement('img');
+        imageElement.src = URL.createObjectURL(image);
+        imageElement.style.maxWidth = '200px';
+        messageElement.appendChild(imageElement);
+      }
+
+      // Tambahkan pesan ke container
+      chatContainer.appendChild(messageElement);
+
+      // Reset input
+      messageInput.value = '';
+      imageInput.value = '';
+    }
+
+    // Fungsi untuk mendapatkan waktu saat ini
+    function getCurrentTime() {
+      var now = new Date();
+      var hours = now.getHours();
+      var minutes = now.getMinutes();
+      var timeString = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
+      return timeString;
+    }
+  </script>
+</body>
+</html>
